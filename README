@@ -2,9 +2,24 @@ NAME
     Data::Schema::Schema::CPANMeta - Schema for CPAN Meta
 
 VERSION
-    version 0.01
+    version 0.04
 
 SYNOPSIS
+     # you can use it in test script a la Test::CPAN::Meta
+
+     use Test::More;
+     use Data::Schema::Schema::CPANMeta qw(meta_yaml_ok);
+     meta_yaml_ok();
+
+     # slightly longer example
+
+     use Test::More;
+     use Data::Schema::Schema::CPANMeta qw(meta_spec_ok);
+     meta_spec_ok("META.yml", 1.4, "Bad META.yml!");
+     done_testing();
+
+     # even slightly longer example, outside test script
+
      use Data::Schema; # ds_validate
      use Data::Schema::Schema::CPANMeta qw($schema_14);
      use YAML; # Load, Dump
@@ -21,10 +36,30 @@ DESCRIPTION
 
     You can use the schema to validate META.yml files.
 
+FUNCTIONS
+  meta_yaml_ok([$msg])
+    Basic META.yml wrapper around meta_spec_ok.
+
+    Returns a hash reference to the contents of the parsed META.yml
+
+  meta_spec_ok($file, $version [,$msg])
+    Validates the named file against the given specification version. Both
+    $file and $version can be undefined.
+
+    Returns a hash reference to the contents of the given file, after it has
+    been parsed.
+
+    Note that unlike with "meta_yaml_ok()", this form requires you to
+    specify the number of tests you will be running in your test script (or
+    use "done_testing()"). Also note that each "meta_spec_ok()" is actually
+    2 tests under the hood.
+
 SEE ALSO
     Data::Schema
 
     Module::Build
+
+    Test::CPAN::Meta
 
     CPAN META.yml specification document,
     http://module-build.sourceforge.net/META-spec-v1.4.html

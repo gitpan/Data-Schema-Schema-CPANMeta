@@ -1,14 +1,65 @@
 package Data::Schema::Schema::CPANMeta;
-our $VERSION = '0.01';
+our $VERSION = '0.04';
 
 
 # ABSTRACT: Schema for CPAN Meta
 
 
+use Test::More;
+use Data::Schema;
+use File::Slurp;
+use YAML::XS;
+
+
+sub meta_yaml_ok {
+    plan tests => 2;
+    return meta_spec_ok(undef, undef, @_);
+}
+
+
+sub meta_spec_ok {
+    my ($file, $vers, $msg) = @_;
+    $file ||= 'META.yml';
+
+    if (!$vers) {
+        $vers = 1.4;
+    } elsif ($vers != 1.4) {
+        die "Currently only CPAN META specification version 1.4 is supported";
+    }
+
+    unless($msg) {
+        $msg = "$file meets the designated specification";
+        $msg .= " ($vers)" if($vers);
+    }
+
+    my $file_content = read_file $file;
+    my $meta;
+    eval '$meta = Load($file_content)';
+    if($@) {
+        ok(0, "$file contains valid YAML");
+        ok(0, $msg);
+        diag("  ERR: $@");
+        return;
+    } else {
+        ok(1, "$file contains valid YAML");
+    }
+
+    my $ds = Data::Schema->new(schema => $schema_14);
+    my $res = $ds->validate($meta);
+    if ($res->{success}) {
+        ok(1, $msg);
+    } else {
+        ok(0, $msg);
+        diag("  ERR: ".join(", ", @{ $res->{errors} }));
+    }
+    return $yaml;
+}
+
+
 use YAML::XS;
 require Exporter;
 our @ISA = qw(Exporter);
-our @EXPORT_OK = qw($schema_14);
+our @EXPORT_OK = qw($schema_14 meta_yaml_ok meta_spec_ok);
 
 our $schema_14 = Load(<<'END_OF_SCHEMA');
 - hash
@@ -120,9 +171,24 @@ Data::Schema::Schema::CPANMeta - Schema for CPAN Meta
 
 =head1 VERSION
 
-version 0.01
+version 0.04
 
 =head1 SYNOPSIS
+
+ # you can use it in test script a la Test::CPAN::Meta
+
+ use Test::More;
+ use Data::Schema::Schema::CPANMeta qw(meta_yaml_ok);
+ meta_yaml_ok();
+
+ # slightly longer example
+
+ use Test::More;
+ use Data::Schema::Schema::CPANMeta qw(meta_spec_ok);
+ meta_spec_ok("META.yml", 1.4, "Bad META.yml!");
+ done_testing();
+
+ # even slightly longer example, outside test script
 
  use Data::Schema; # ds_validate
  use Data::Schema::Schema::CPANMeta qw($schema_14);
@@ -141,11 +207,34 @@ this module, you can find the schema written as YAML.
 
 You can use the schema to validate META.yml files.
 
+=head1 FUNCTIONS
+
+=head2 meta_yaml_ok([$msg])
+
+Basic META.yml wrapper around meta_spec_ok.
+
+Returns a hash reference to the contents of the parsed META.yml
+
+=head2 meta_spec_ok($file, $version [,$msg])
+
+Validates the named file against the given specification version. Both
+$file and $version can be undefined.
+
+Returns a hash reference to the contents of the given file, after it
+has been parsed.
+
+Note that unlike with C<meta_yaml_ok()>, this form requires you to
+specify the number of tests you will be running in your test script
+(or use C<done_testing()>). Also note that each C<meta_spec_ok()> is
+actually 2 tests under the hood.
+
 =head1 SEE ALSO
 
 L<Data::Schema>
 
 L<Module::Build>
+
+L<Test::CPAN::Meta>
 
 CPAN META.yml specification document, http://module-build.sourceforge.net/META-spec-v1.4.html
 

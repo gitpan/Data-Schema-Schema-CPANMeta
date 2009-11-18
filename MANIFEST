@@ -8,6 +8,8 @@ dist.ini
 lib/Data/Schema/Schema/CPANMeta.pm
 t/00-load.t
 t/01-basics.t
+t/02-meta_spec_ok.t
+t/03-meta_yaml_ok.t
 t/data/META.yml
 t/release-pod-coverage.t
 t/release-pod-syntax.t
