@@ -2,7 +2,7 @@ NAME
     Data::Schema::Schema::CPANMeta - Schema for CPAN Meta
 
 VERSION
-    version 0.02
+    version 0.03
 
 SYNOPSIS
      # you can use it in test script a la Test::CPAN::Meta
@@ -15,7 +15,8 @@ SYNOPSIS
 
      use Test::More;
      use Data::Schema::Schema::CPANMeta qw(meta_spec_ok);
-     meta_yaml_ok();
+     meta_spec_ok("META.yml", 1.4, "Bad META.yml!");
+     done_testing();
 
      # even slightly longer example, outside test script
 

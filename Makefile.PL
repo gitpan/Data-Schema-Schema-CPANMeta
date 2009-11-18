@@ -9,7 +9,7 @@ WriteMakefile(
   NAME      => 'Data::Schema::Schema::CPANMeta',
   AUTHOR    => "Steven\ Haryanto\ \<stevenharyanto\@gmail\.com\>",
   ABSTRACT  => "Schema\ for\ CPAN\ Meta",
-  VERSION   => '0.02',
+  VERSION   => '0.03',
   EXE_FILES => [ qw() ],
   (eval { ExtUtils::MakeMaker->VERSION(6.31) } ? (LICENSE => 'perl') : ()),
   PREREQ_PM    => {

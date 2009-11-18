@@ -1,5 +1,5 @@
 package Data::Schema::Schema::CPANMeta;
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 
 # ABSTRACT: Schema for CPAN Meta
@@ -171,7 +171,7 @@ Data::Schema::Schema::CPANMeta - Schema for CPAN Meta
 
 =head1 VERSION
 
-version 0.02
+version 0.03
 
 =head1 SYNOPSIS
 
@@ -185,7 +185,8 @@ version 0.02
 
  use Test::More;
  use Data::Schema::Schema::CPANMeta qw(meta_spec_ok);
- meta_yaml_ok();
+ meta_spec_ok("META.yml", 1.4, "Bad META.yml!");
+ done_testing();
 
  # even slightly longer example, outside test script
 
