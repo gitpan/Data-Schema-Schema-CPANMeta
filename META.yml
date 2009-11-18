@@ -11,8 +11,7 @@ name: Data-Schema-Schema-CPANMeta
 requires:
   Data::Schema: 0
   File::Slurp: 0
-  FindBin: 0
   Storable: 0
   Test::More: 0
   YAML::XS: 0
-version: 0.03
+version: 0.01

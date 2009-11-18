@@ -1,10 +1,4 @@
 Revision history for Data-Schema-Schema-CPANMeta14
 
-0.03    2009-11-18
-        Fix typo in documentation
-
-0.02    2009-11-18
-        Add meta_yaml_ok() and meta_spec_ok(), a la Test::CPAN::Meta
-
 0.01    2009-11-18
         First release
