@@ -1,0 +1,74 @@
+NAME
+    Data::Schema::Schema::CPANMeta - Schema for CPAN Meta
+
+VERSION
+    version 0.02
+
+SYNOPSIS
+     # you can use it in test script a la Test::CPAN::Meta
+
+     use Test::More;
+     use Data::Schema::Schema::CPANMeta qw(meta_yaml_ok);
+     meta_yaml_ok();
+
+     # slightly longer example
+
+     use Test::More;
+     use Data::Schema::Schema::CPANMeta qw(meta_spec_ok);
+     meta_yaml_ok();
+
+     # even slightly longer example, outside test script
+
+     use Data::Schema; # ds_validate
+     use Data::Schema::Schema::CPANMeta qw($schema_14);
+     use YAML; # Load, Dump
+     use File::Slurp; # read_file
+
+     my $meta = Load(scalar read_file "META.yml");
+     my $res = ds_validate($meta, $schema_14);
+     $res->{success} or die Dump $res->{errors};
+
+DESCRIPTION
+    This module contains the schema for CPAN META.yml specification version
+    1.4, in Data::Schema language. If you browse the source of this module,
+    you can find the schema written as YAML.
+
+    You can use the schema to validate META.yml files.
+
+FUNCTIONS
+  meta_yaml_ok([$msg])
+    Basic META.yml wrapper around meta_spec_ok.
+
+    Returns a hash reference to the contents of the parsed META.yml
+
+  meta_spec_ok($file, $version [,$msg])
+    Validates the named file against the given specification version. Both
+    $file and $version can be undefined.
+
+    Returns a hash reference to the contents of the given file, after it has
+    been parsed.
+
+    Note that unlike with "meta_yaml_ok()", this form requires you to
+    specify the number of tests you will be running in your test script (or
+    use "done_testing()"). Also note that each "meta_spec_ok()" is actually
+    2 tests under the hood.
+
+SEE ALSO
+    Data::Schema
+
+    Module::Build
+
+    Test::CPAN::Meta
+
+    CPAN META.yml specification document,
+    http://module-build.sourceforge.net/META-spec-v1.4.html
+
+AUTHOR
+      Steven Haryanto <stevenharyanto@gmail.com>
+
+COPYRIGHT AND LICENSE
+    This software is copyright (c) 2009 by Steven Haryanto.
+
+    This is free software; you can redistribute it and/or modify it under
+    the same terms as the Perl 5 programming language system itself.
+
