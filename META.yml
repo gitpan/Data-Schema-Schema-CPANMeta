@@ -15,4 +15,4 @@ requires:
   Storable: 0
   Test::More: 0
   YAML::XS: 0
-version: 0.04
+version: 0.05

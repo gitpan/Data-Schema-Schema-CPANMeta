@@ -1,5 +1,8 @@
 Revision history for Data-Schema-Schema-CPANMeta14
 
+0.05    2009-11-18
+        Allow access to raw YAML schema via $yaml_schema_14
+
 0.04    2009-11-18
         Add left-out test files
 

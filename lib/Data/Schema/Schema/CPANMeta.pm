@@ -1,5 +1,5 @@
 package Data::Schema::Schema::CPANMeta;
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 
 # ABSTRACT: Schema for CPAN Meta
@@ -59,9 +59,9 @@ sub meta_spec_ok {
 use YAML::XS;
 require Exporter;
 our @ISA = qw(Exporter);
-our @EXPORT_OK = qw($schema_14 meta_yaml_ok meta_spec_ok);
+our @EXPORT_OK = qw($schema_14 $yaml_schema_14 meta_yaml_ok meta_spec_ok);
 
-our $schema_14 = Load(<<'END_OF_SCHEMA');
+our $yaml_schema_14 = <<'END_OF_SCHEMA';
 - hash
 - required: true
   required_keys: [name, abstract, version, author, license, meta-spec]
@@ -160,6 +160,9 @@ our $schema_14 = Load(<<'END_OF_SCHEMA');
 
     generated_by: str
 END_OF_SCHEMA
+
+our $schema_14 = Load($yaml_schema_14);
+
 1;
 
 __END__
@@ -171,7 +174,7 @@ Data::Schema::Schema::CPANMeta - Schema for CPAN Meta
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 SYNOPSIS
 
@@ -199,11 +202,15 @@ version 0.04
  my $res = ds_validate($meta, $schema_14);
  $res->{success} or die Dump $res->{errors};
 
+ # to get the schema as YAML string
+ use Data::Schema::Schema::CPANMeta qw($yaml_schema_14);
+
 =head1 DESCRIPTION
 
 This module contains the schema for CPAN META.yml specification
-version 1.4, in L<Data::Schema> language. If you browse the source of
-this module, you can find the schema written as YAML.
+version 1.4, in L<Data::Schema> language. If you import
+C<$yaml_schema_14> (or browse the source of this module), you can find
+the schema written as YAML.
 
 You can use the schema to validate META.yml files.
 
