@@ -1,12 +1,13 @@
 use strict;
 use warnings;
 use Data::Schema;
-use Data::Schema::Schema::CPANMeta qw($schema_14);
+use Data::Schema::Schema::CPANMeta;
 use Storable qw(dclone);
 
 #use YAML;
 
-my $ds = Data::Schema->new(schema => $schema_14);
+my $cpan_meta_14 = $Data::Schema::Schema::CPANMeta::DS_SCHEMAS->{cpan_meta_14};
+my $ds = Data::Schema->new(schema => $cpan_meta_14);
 
 sub valid($$$) {
     my ($data, $sub, $test_name) = @_;

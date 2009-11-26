@@ -1,4 +1,8 @@
-Revision history for Data-Schema-Schema-CPANMeta14
+Revision history for Data-Schema-Schema-CPANMeta
+
+0.06    2009-11-26
+        - Be compatible with import syntax in Data::Schema 0.13+
+        - Some small changes
 
 0.05    2009-11-18
         Allow access to raw YAML schema via $yaml_schema_14

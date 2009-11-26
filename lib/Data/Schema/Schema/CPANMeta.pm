@@ -1,5 +1,5 @@
 package Data::Schema::Schema::CPANMeta;
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 
 # ABSTRACT: Schema for CPAN Meta
@@ -8,7 +8,10 @@ our $VERSION = '0.05';
 use Test::More;
 use Data::Schema;
 use File::Slurp;
-use YAML::XS;
+use YAML::Syck;
+require Exporter;
+our @ISA = qw(Exporter);
+our @EXPORT_OK = qw($schema_14 $yaml_schema_14 meta_yaml_ok meta_spec_ok);
 
 
 sub meta_yaml_ok {
@@ -56,58 +59,53 @@ sub meta_spec_ok {
 }
 
 
-use YAML::XS;
-require Exporter;
-our @ISA = qw(Exporter);
-our @EXPORT_OK = qw($schema_14 $yaml_schema_14 meta_yaml_ok meta_spec_ok);
-
 our $yaml_schema_14 = <<'END_OF_SCHEMA';
 - hash
-- required: true
+- required: 1
   required_keys: [name, abstract, version, author, license, meta-spec]
   keys:
 
     meta-spec:
       - hash
-      - required: true
+      - required: 1
         required_keys: [version, url]
         keys:
-          version: [float, {required: true, is: 1.4}]
-          url: [str, {required: true}] # XXX type:url
+          version: [float, {required: 1, is: 1.4}]
+          url: [str, {required: 1}] # XXX type:url
 
-    name: [str, {required: true, match: '^\w+(-\w+)*$'}]
+    name: [str, {required: 1, match: '^\w+(-\w+)*$'}]
 
-    abstract: [str, {required: true}]
+    abstract: [str, {required: 1}]
 
-    version: [str, {required: true}] # XXX type:ver
+    version: [str, {required: 1}] # XXX type:ver
 
     author:
       - array
-      - required: true
+      - required: 1
         minlen: 1
         of:
           - str
-          - required: true
+          - required: 1
             #XXX error levels not yet supported by DS
             #"match:WARN": '^\S.* <.+@.+>$'
             #"match:errmsg": 'preferred format is author-name <email-address>'
 
     license:
       - str
-      - required: true
+      - required: 1
         one_of: [apache, artistic, artistic_2, bsd, gpl, lgpl, mit, mozilla,
                  open_source, perl, restrictive, unrestricted, unknown]
 
     distribution_type:
       - str
-      - required: true
+      - required: 1
         one_of: [module, script]
 
     requires: &modlist
       - hash
-      - required: true
+      - required: 1
         keys_match: '^(perl|[A-Za-z0-9_]+(::[A-Za-z0-9_]+)*)$' # XXX: regex:perl|pkg
-        values_of: [str, {required: true}] # XXX type:ver
+        values_of: [str, {required: 1}] # XXX type:ver
 
     build_requires: *modlist
 
@@ -121,7 +119,7 @@ our $yaml_schema_14 = <<'END_OF_SCHEMA';
       - hash
       - values_of:
           - hash
-          - required: true
+          - required: 1
             keys:
               description: str
               requires: *modlist
@@ -133,7 +131,7 @@ our $yaml_schema_14 = <<'END_OF_SCHEMA';
 
     provides:
       - hash
-      - required: true
+      - required: 1
         keys_match: '^[A-Za-z0-9_]+(::[A-Za-z0-9_]+)*$' # XXX regex:pkg
         values_of:
           - hash
@@ -145,10 +143,10 @@ our $yaml_schema_14 = <<'END_OF_SCHEMA';
     no_index: &no_index
       - hash
       - keys:
-          file: [array, {of: [str, {required: true}]}]
-          directory: [array, {of: [str, {required: true}]}]
-          package: [array, {of: [str, required: true, match: '^[A-Za-z0-9_]+(::[A-Za-z0-9_]+)*$']}] # XXX regex:pkg
-          namespace: [array, {of: [str, required: true, match: '^[A-Za-z0-9_]+(::[A-Za-z0-9_]+)*$']}] # XXX regex:pkg
+          file: [array, {of: [str, {required: 1}]}]
+          directory: [array, {of: [str, {required: 1}]}]
+          package: [array, {of: [str, required: 1, match: '^[A-Za-z0-9_]+(::[A-Za-z0-9_]+)*$']}] # XXX regex:pkg
+          namespace: [array, {of: [str, required: 1, match: '^[A-Za-z0-9_]+(::[A-Za-z0-9_]+)*$']}] # XXX regex:pkg
 
     private: *no_index
     # XXX WARN: deprecated
@@ -163,6 +161,10 @@ END_OF_SCHEMA
 
 our $schema_14 = Load($yaml_schema_14);
 
+our $DS_SCHEMAS = {
+    cpan_meta_14 => $schema_14,
+};
+
 1;
 
 __END__
@@ -174,7 +176,7 @@ Data::Schema::Schema::CPANMeta - Schema for CPAN Meta
 
 =head1 VERSION
 
-version 0.05
+version 0.06
 
 =head1 SYNOPSIS
 
@@ -186,23 +188,20 @@ version 0.05
 
  # slightly longer example
 
- use Test::More;
+ use Test::More tests => ...;
  use Data::Schema::Schema::CPANMeta qw(meta_spec_ok);
  meta_spec_ok("META.yml", 1.4, "Bad META.yml!");
- done_testing();
 
- # even slightly longer example, outside test script
+ # using outside test script
 
- use Data::Schema; # ds_validate
- use Data::Schema::Schema::CPANMeta qw($schema_14);
- use YAML; # Load, Dump
- use File::Slurp; # read_file
-
+ use Data::Schema qw(Schema::CPANMeta);
+ use YAML;
+ use File::Slurp;
  my $meta = Load(scalar read_file "META.yml");
- my $res = ds_validate($meta, $schema_14);
- $res->{success} or die Dump $res->{errors};
+ my $res = ds_validate($meta, 'cpan_meta_14');
 
  # to get the schema as YAML string
+
  use Data::Schema::Schema::CPANMeta qw($yaml_schema_14);
 
 =head1 DESCRIPTION

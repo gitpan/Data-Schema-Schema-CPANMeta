@@ -9,10 +9,10 @@ meta-spec:
   version: 1.4
 name: Data-Schema-Schema-CPANMeta
 requires:
-  Data::Schema: 0
+  Data::Schema: 0.13
   File::Slurp: 0
   FindBin: 0
   Storable: 0
   Test::More: 0
-  YAML::XS: 0
-version: 0.05
+  YAML::Syck: 0
+version: 0.06

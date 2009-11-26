@@ -1,14 +1,12 @@
 #!perl -T
 
+use lib './t'; require 'testlib.pm';
 use strict;
 use warnings;
-use Test::More;
+use Test::More tests => 51;
 use File::Slurp;
 use FindBin '$Bin';
-use YAML::XS;
-use lib './t';
-
-require 'testlib.pm';
+use YAML::Syck;
 
 my $meta = Load(scalar read_file("$Bin/data/META.yml"));
 
@@ -91,5 +89,3 @@ valid  ($meta, sub { shift->{resources} = {} }, "valid resources");
 # resources is optional
 invalid($meta, sub { shift->{generated_by} = [] }, "invalid generated_by: must be str");
 valid  ($meta, sub { shift->{generated_by} = 'foo' }, "valid generated_by");
-
-done_testing();
