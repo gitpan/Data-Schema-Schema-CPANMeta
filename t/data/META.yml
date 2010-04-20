@@ -1,35 +1,43 @@
 --- #YAML:1.0
 name: Module-Build
 abstract: Build and install Perl modules
-version: 0.20
+description: Module::Build is a system for building, testing, and installing Perl modules. It is meant to ... blah blah blah ...
+version: 0.36
+release_status: stable
 author:
   - Ken Williams <kwilliams@cpan.org>
-license: perl
-distribution_type: module
-requires:
-  Config: 0
-  Cwd: 0
-  Data::Dumper: 0
-  ExtUtils::Install: 0
-  File::Basename: 0
-  File::Compare: 0
-  File::Copy: 0
-  File::Find: 0
-  File::Path: 0
-  File::Spec: 0
-  IO::File: 0
-  perl: 5.005_03
-recommends:
-  Archive::Tar: 1.00
-  ExtUtils::Install: 0.3
-  ExtUtils::ParseXS: 2.02
-  Pod::Text: 0
-  YAML: 0.35
-build_requires:
-  Test: 0
+  - Module-Build list <module-build@perl.org>
+license: [perl_5]
+optional_features:
+  domination:
+    description: Take over the world
+    prereqs:
+      develop:
+        requires:
+          Genius::Evil: "1.234"
+      runtime:
+        requires:
+          Machine::Weather: "2.0"
+prereqs:
+  build:
+    requires:
+      Test::More: "0"
+  runtime:
+    requires:
+      perl: "5.006"
+      ExtUtils::Install: "0"
+      File::Basename: "0"
+      File::Compare: "0"
+      IO::File: "0"
+    recommends:
+      Archive::Tar: "1.00"
+      ExtUtils::Install: "0.3"
+      ExtUtils::ParseXS: "2.02"
+dynamic_config: 1
+keywords: [toolchain, cpan, dual-life]
 resources:
   license: http://dev.perl.org/licenses/
 meta-spec:
-  version: 1.4
-  url: http://module-build.sourceforge.net/META-spec-v1.3.html
-generated_by: Module::Build version 0.20
+  version: 2
+  url: http://search.cpan.org/perldoc?CPAN::Meta::Spec
+generated_by: Module::Build version 0.36

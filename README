@@ -2,7 +2,7 @@ NAME
     Data::Schema::Schema::CPANMeta - Schema for CPAN Meta
 
 VERSION
-    version 0.06
+    version 0.07
 
 SYNOPSIS
      # you can use it in test script a la Test::CPAN::Meta
@@ -11,11 +11,23 @@ SYNOPSIS
      use Data::Schema::Schema::CPANMeta qw(meta_yaml_ok);
      meta_yaml_ok();
 
+     # test META.json instead of META.yml
+
+     use Test::More;
+     use Data::Schema::Schema::CPANMeta qw(meta_json_ok);
+     meta_json_ok();
+
      # slightly longer example
 
      use Test::More tests => ...;
      use Data::Schema::Schema::CPANMeta qw(meta_spec_ok);
      meta_spec_ok("META.yml", 1.4, "Bad META.yml!");
+
+     # JSON version
+
+     use Test::More tests => ...;
+     use Data::Schema::Schema::CPANMeta qw(meta_spec_ok);
+     meta_spec_ok("META.json", 2, "Bad META.json!");
 
      # using outside test script
 
@@ -23,24 +35,30 @@ SYNOPSIS
      use YAML;
      use File::Slurp;
      my $meta = Load(scalar read_file "META.yml");
-     my $res = ds_validate($meta, 'cpan_meta_14');
+     my $res = ds_validate($meta, 'cpan_meta_2');
 
      # to get the schema as YAML string
 
-     use Data::Schema::Schema::CPANMeta qw($yaml_schema_14);
+     use Data::Schema::Schema::CPANMeta qw($yaml_schema_2 $yaml_schema_14);
 
 DESCRIPTION
     This module contains the schema for CPAN META.yml specification version
-    1.4, in Data::Schema language. If you import $yaml_schema_14 (or browse
-    the source of this module), you can find the schema written as YAML.
+    1.4 and 2, in Data::Schema language. If you import $yaml_schema_14 and
+    $yaml_schema_2 (or browse the source of this module), you can find the
+    schema written as YAML.
 
-    You can use the schema to validate META.yml files.
+    You can use the schema to validate META.yml or META.json files.
 
 FUNCTIONS
   meta_yaml_ok([$msg])
     Basic META.yml wrapper around meta_spec_ok.
 
     Returns a hash reference to the contents of the parsed META.yml
+
+  meta_json_ok([$msg])
+    Basic META.json wrapper around meta_spec_ok.
+
+    Returns a hash reference to the contents of the parsed META.json
 
   meta_spec_ok($file, $version [,$msg])
     Validates the named file against the given specification version. Both
@@ -49,10 +67,10 @@ FUNCTIONS
     Returns a hash reference to the contents of the given file, after it has
     been parsed.
 
-    Note that unlike with "meta_yaml_ok()", this form requires you to
-    specify the number of tests you will be running in your test script (or
-    use "done_testing()"). Also note that each "meta_spec_ok()" is actually
-    2 tests under the hood.
+    Note that unlike with "meta_yaml_ok()" or "meta_json_ok()", this form
+    requires you to specify the number of tests you will be running in your
+    test script (or use "done_testing()"). Also note that each
+    "meta_spec_ok()" is actually 2 tests under the hood.
 
 SEE ALSO
     Data::Schema
@@ -68,7 +86,7 @@ AUTHOR
       Steven Haryanto <stevenharyanto@gmail.com>
 
 COPYRIGHT AND LICENSE
-    This software is copyright (c) 2009 by Steven Haryanto.
+    This software is copyright (c) 2010 by Steven Haryanto.
 
     This is free software; you can redistribute it and/or modify it under
     the same terms as the Perl 5 programming language system itself.

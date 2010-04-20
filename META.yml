@@ -2,7 +2,11 @@
 abstract: 'Schema for CPAN Meta'
 author:
   - 'Steven Haryanto <stevenharyanto@gmail.com>'
-generated_by: 'Dist::Zilla version 1.093000'
+build_requires:
+  Module::Build: 0.35
+configure_requires:
+  Module::Build: 0.35
+generated_by: 'Dist::Zilla version 1.093400'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -12,7 +16,9 @@ requires:
   Data::Schema: 0.13
   File::Slurp: 0
   FindBin: 0
+  JSON: 0
   Storable: 0
   Test::More: 0
   YAML::Syck: 0
-version: 0.06
+  perl: 5.010000
+version: 0.07
