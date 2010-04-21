@@ -3,7 +3,7 @@
 use lib './t'; require 'testlib.pm';
 use strict;
 use warnings;
-use Test::More tests => 87;
+use Test::More tests => 92;
 use File::Slurp;
 use FindBin '$Bin';
 use YAML::Syck; $YAML::Syck::ImplicitTyping = 1;
@@ -125,6 +125,10 @@ valid_2  ($meta, sub { shift->{keywords} = ['foo'] }, "valid keywords");
 invalid_2($meta, sub { shift->{resources} = 'foo' }, "invalid resources: must be hash");
 valid_2  ($meta, sub { shift->{resources} = {homepage=>1, license=>1, bugtracker=>1, repository=>1} }, "valid keys in resources");
 invalid_2($meta, sub { shift->{resources} = {foo=>1} }, "invalid keys in resources");
+
+valid_2  ($meta, sub { shift->{X_Foo} = 1   }, "valid custom field 1");
+valid_2  ($meta, sub { shift->{x_foo} = 1   }, "valid custom field 2");
+invalid_2($meta, sub { shift->{"x-foo"} = 1 }, "invalid custom field");
 
 # see deprecated warnings, should've tested this. in DS 0.13 forbidden:warn doesn't work yet
 #use vars qw($ds_2);

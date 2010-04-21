@@ -1,5 +1,5 @@
 package Data::Schema::Schema::CPANMeta;
-our $VERSION = '0.07';
+our $VERSION = '0.08';
 # ABSTRACT: Schema for CPAN Meta
 
 
@@ -218,11 +218,13 @@ attrs:
   required: 1
   required_keys: [abstract, author, dynamic_config, generated_by,
                   license, meta-spec, name, release_status]
-  keys:
+  keys_regex:
 
-    abstract: [str, {required: 1}]
+    '^[Xx]_': any
 
-    author:
+    '^abstract$': [str, {required: 1}]
+
+    '^author$':
       - array
       - required: 1
         minlen: 1
@@ -232,38 +234,38 @@ attrs:
             "match:warn": '^\S.* <.+@.+>$'
             "match:warnmsg": 'preferred format is author-name <email-address>'
 
-    build_requires:
+    '^build_requires$':
       - relations
       - required: 1
         "forbidden:warn": 1
         "forbidden:warnmsg": build_requires is deprecated in spec 2 and has been replaced by prereqs
 
-    configure_requires:
+    '^configure_requires$':
       - relations
       - required: 1
         "forbidden:warn": 1
         "forbidden:warnmsg": configure_requires is deprecated in spec 2 and has been replaced by prereqs
 
-    conflicts:
+    '^conflicts$':
       - relations
       - required: 1
         "forbidden:warn": 1
         "forbidden:warnmsg": conflicts is deprecated in spec 2 and has been replaced by prereqs
 
-    description: [str, {required: 1}]
+    '^description$': [str, {required: 1}]
 
-    distribution_type:
+    '^distribution_type$':
       - str
       - required: 1
         one_of: [module, script]
         "forbidden:warn": 1
         "forbidden:warnmsg": distribution_type is deprecated in spec 2 since it is meaningless for many distributions which are hybrid or modules and scripts
 
-    dynamic_config: [bool, {required: 1}]
+    '^dynamic_config$': [bool, {required: 1}]
 
-    generated_by: [str, {required: 1}]
+    '^generated_by$': [str, {required: 1}]
 
-    keywords:
+    '^keywords$':
       - array
       - required: 1
         of:
@@ -271,7 +273,7 @@ attrs:
           - required: 1
             match: '^\S+$'
 
-    license:
+    '^license$':
       - array
       - required: 1
         minlen: 1
@@ -285,13 +287,13 @@ attrs:
                      qpl_1_0, ssleay, sun, zlib, open_source,
                      restricted, unrestricted, unknown]
 
-    license_uri:
+    '^license_uri$':
       - str
       - required: 1
         "forbidden:warn": 1
         "forbidden:warnmsg": license_uri is deprecated in 1.2 and has been replaced by license in resources
 
-    meta-spec:
+    '^meta-spec$':
       - hash
       - required: 1
         required_keys: [version]
@@ -299,13 +301,13 @@ attrs:
           version: [float, {required: 1, is: 2}]
           url: [str, {required: 1}]
 
-    name: [str, {required: 1, match: '^\w+(-\w+)*$'}]
+    '^name$': [str, {required: 1, match: '^\w+(-\w+)*$'}]
 
-    no_index:
+    '^no_index$':
       - no_index
       - required: 1
 
-    optional_features:
+    '^optional_features$':
       - hash
       - values_of:
           - hash
@@ -336,17 +338,17 @@ attrs:
                   "forbidden:warn": 1
                   "forbidden:warnmsg": conflicts is deprecated in spec 2 and has been replaced by prereqs
 
-    prereqs:
+    '^prereqs$':
       - prereqs
       - required: 1
 
-    private:
+    '^private$':
       - no_index
       - required: 1
         "forbidden:warn": 1
         "forbidden:warnmsg": private is deprecated in spec 1.2 and has been renamed to no_index
 
-    provides:
+    '^provides$':
       - hash
       - required: 1
         keys_of: package
@@ -358,29 +360,29 @@ attrs:
               file: [str, {required: 1}]
               version: [version, {required: 1}]
 
-    recommends:
+    '^recommends$':
       - relations
       - required: 1
         "forbidden:warn": 1
         "forbidden:warnmsg": recommends is deprecated in spec 2 and has been replaced by prereqs
 
-    release_status:
+    '^release_status$':
       - str
       - required: 1
         one_of: [stable, testing, unstable]
 
-    requires:
+    '^requires$':
       - relations
       - required: 1
         "forbidden:warn": 1
         "forbidden:warnmsg": requires is deprecated in spec 2 and has been replaced by prereqs
 
-    resources:
+    '^resources$':
       - hash
       - required: 1
         allowed_keys: [homepage, license, bugtracker, repository]
 
-    version: [version, {required: 1}]
+    '^version$': [version, {required: 1}]
 
   key_deps:
     # if version contains underscore, release_status must not be stable
@@ -414,7 +416,7 @@ Data::Schema::Schema::CPANMeta - Schema for CPAN Meta
 
 =head1 VERSION
 
-version 0.07
+version 0.08
 
 =head1 SYNOPSIS
 
@@ -515,7 +517,10 @@ L<Module::Build>
 L<Test::CPAN::Meta>
 
 
-CPAN META.yml specification document, http://module-build.sourceforge.net/META-spec-v1.4.html
+CPAN META 1.4 specification document, http://module-build.sourceforge.net/META-spec-v1.4.html
+
+
+CPAN META 2 specification document, L<CPAN::Meta::Spec>
 
 =head1 AUTHOR
 

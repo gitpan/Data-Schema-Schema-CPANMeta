@@ -2,7 +2,7 @@ NAME
     Data::Schema::Schema::CPANMeta - Schema for CPAN Meta
 
 VERSION
-    version 0.07
+    version 0.08
 
 SYNOPSIS
      # you can use it in test script a la Test::CPAN::Meta
@@ -79,8 +79,10 @@ SEE ALSO
 
     Test::CPAN::Meta
 
-    CPAN META.yml specification document,
+    CPAN META 1.4 specification document,
     http://module-build.sourceforge.net/META-spec-v1.4.html
+
+    CPAN META 2 specification document, CPAN::Meta::Spec
 
 AUTHOR
       Steven Haryanto <stevenharyanto@gmail.com>

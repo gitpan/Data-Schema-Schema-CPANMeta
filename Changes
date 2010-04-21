@@ -1,5 +1,9 @@
 Revision history for Data-Schema-Schema-CPANMeta
 
+0.08    2010-04-20
+        - Allow custom fields (qr/^x_/i)
+        - Add link to CPAN::Meta::Spec
+
 0.07    2010-04-20
         - Support CPAN Meta 2
 
