@@ -2,7 +2,7 @@ NAME
     Data::Schema::Schema::CPANMeta - Schema for CPAN Meta
 
 VERSION
-    version 0.08
+    version 0.09
 
 SYNOPSIS
      # you can use it in test script a la Test::CPAN::Meta

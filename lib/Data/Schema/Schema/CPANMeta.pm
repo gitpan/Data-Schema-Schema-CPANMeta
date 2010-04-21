@@ -1,5 +1,5 @@
 package Data::Schema::Schema::CPANMeta;
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 # ABSTRACT: Schema for CPAN Meta
 
 
@@ -217,7 +217,7 @@ type: hash
 attrs:
   required: 1
   required_keys: [abstract, author, dynamic_config, generated_by,
-                  license, meta-spec, name, release_status]
+                  license, meta-spec, name, release_status, version]
   keys_regex:
 
     '^[Xx]_': any
@@ -416,7 +416,7 @@ Data::Schema::Schema::CPANMeta - Schema for CPAN Meta
 
 =head1 VERSION
 
-version 0.08
+version 0.09
 
 =head1 SYNOPSIS
 

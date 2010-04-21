@@ -1,5 +1,8 @@
 Revision history for Data-Schema-Schema-CPANMeta
 
+0.09    2010-04-21
+        - Bug fix: version was not a required key
+
 0.08    2010-04-20
         - Allow custom fields (qr/^x_/i)
         - Add link to CPAN::Meta::Spec
